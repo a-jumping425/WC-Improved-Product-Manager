@@ -46,6 +46,11 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
 
             // Plugin Deactivation
             register_deactivation_hook( __FILE__, array($this, 'deactivate') );
+
+            if ( is_admin() ) { // admin actions
+                // Admin Page Left Menu Button
+                add_action( 'admin_menu', array($this, 'register_admin_menu') );
+            }
         }
 
         public function activate() {
@@ -54,6 +59,69 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
 
         public function deactivate() {
 
+        }
+
+        /**
+         * Register admin menu of plugin
+         */
+        public function register_admin_menu() {
+            $menu = add_menu_page(
+                __('Enhanced product search', 'wc_eps'),
+                __('Enhanced product search', 'wc_eps'),
+                'manage_options',
+                'wc_eps',
+                array($this, 'show_search_page'),
+                'dashicons-search'
+            );
+        }
+
+        function show_search_page() {
+            ?>
+            <div class="wrap">
+                <h1><?php _e( 'Enhanced Product Search', 'wc_eps' ); ?></h1>
+                <form method="post" action="">
+                    <table class="form-table">
+                        <tbody>
+                        <tr>
+                            <th scope="row"><label for="name">Name</label></th>
+                            <td><input type="input" name="wc_eps[name]" id="name" class="regular-text" value="" placeholder="Product name" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="sku">SKU</label></th>
+                            <td><input type="input" name="wc_eps[sku]" id="sku" class="regular-text" value="" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="is_on_sale">Is on sale?</label></th>
+                            <td><input type="checkbox" name="wc_eps[is_on_sale]" id="is_on_sale" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="price_min">Price</label></th>
+                            <td>
+                                <input type="input" name="wc_eps[price_min]" id="price_min" value="" />
+                                &nbsp;-&nbsp;
+                                <input type="input" name="wc_eps[price_max]" id="price_max" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="category">Category</label></th>
+                            <td>
+                                <select name="wc_eps[category]" id="category">
+                                    <option>- Category -</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Attributes</th>
+                            <td>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <?php submit_button(); ?>
+                </form>
+            </div>
+            <?php
         }
     }
 
