@@ -89,6 +89,8 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
 
             wp_enqueue_script('wc_eps_jquery_validate_js', plugins_url('assets/js/jquery.validate.min.js', __FILE__), array(), false, true);
             wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
+
+            wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
         }
 
         public function show_search_page() {
@@ -113,9 +115,9 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                         <tr>
                             <th scope="row"><label for="price_min">Price</label></th>
                             <td>
-                                <input type="input" name="wc_eps[price_min]" id="price_min" value="" />
+                                <input type="input" name="wc_eps[price_min]" id="price_min" class="price" value="" placeholder="Min" />
                                 &nbsp;-&nbsp;
-                                <input type="input" name="wc_eps[price_max]" id="price_max" value="" />
+                                <input type="input" name="wc_eps[price_max]" id="price_max" class="price" value="" placeholder="Max" />
                             </td>
                         </tr>
                         <tr>
