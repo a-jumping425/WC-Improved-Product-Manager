@@ -50,6 +50,9 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             if ( is_admin() ) { // admin actions
                 // Admin Page Left Menu Button
                 add_action( 'admin_menu', array($this, 'register_admin_menu') );
+
+                // Add search scripts and styles
+                add_action( 'admin_enqueue_scripts', array( $this, 'register_search_scripts_and_styles' ) );
             }
         }
 
@@ -75,7 +78,20 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             );
         }
 
-        function show_search_page() {
+        /**
+         * Register scripts and styles to search page
+         */
+        public function register_search_scripts_and_styles($hook) {
+            // Load only on ?page=wc_eps
+            if( $hook != 'toplevel_page_wc_eps' ) {
+                return;
+            }
+
+            wp_enqueue_script('wc_eps_jquery_validate_js', plugins_url('assets/js/jquery.validate.min.js', __FILE__), array(), false, true);
+            wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
+        }
+
+        public function show_search_page() {
             ?>
             <div class="wrap">
                 <h1><?php _e( 'Enhanced Product Search', 'wc_eps' ); ?></h1>
