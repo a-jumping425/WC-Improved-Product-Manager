@@ -219,6 +219,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                                 <div class="attribute_to_add">
                                     <div class="col1">
                                         <select id="attribute_terms">
+                                            <option></option>
                                             <?php
                                             foreach($attributes as $attribute) {
                                                 ?>
@@ -227,7 +228,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                                                     $attribute_terms = $this->get_product_attribute_terms( $attribute->attribute_name );
                                                     foreach($attribute_terms as $term) {
                                                         ?>
-                                                        <option value="<?php echo $term->id; ?>"><?php echo $term->name; ?></option>
+                                                        <option data-attrlabel="<?php echo $attribute->attribute_label; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
                                                         <?php
                                                     }
                                                     ?>
@@ -241,13 +242,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                                 </div>
                                 <div class="clear"></div>
                                 <div>
-                                    <ul id="selected_attributes">
-                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
-                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
-                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
-                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
-                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
-                                    </ul>
+                                    <ul id="selected_attributes"></ul>
                                 </div>
                             </td>
                         </tr>
