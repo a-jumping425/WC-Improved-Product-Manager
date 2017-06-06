@@ -99,6 +99,10 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             wp_enqueue_script('wc_eps_jstree_js', plugins_url('assets/libs/jstree/jstree.min.js', __FILE__), array(), false, true);
             wp_enqueue_style('wc_eps_jstree_css', plugins_url('assets/libs/jstree/themes/default/style.min.css', __FILE__));
 
+            // jQuery Select2 plugin
+            wp_enqueue_script('wc_eps_select2_js', plugins_url('assets/libs/select2/js/select2.full.min.js', __FILE__), array(), false, true);
+            wp_enqueue_style('wc_eps_select2_css', plugins_url('assets/libs/select2/css/select2.min.css', __FILE__));
+
             // Search form
             wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
             wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
