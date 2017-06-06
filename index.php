@@ -88,6 +88,10 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                 return;
             }
 
+            // Font Awesome
+            wp_enqueue_style('wc_eps_fontawesome', plugins_url('assets/css/font-awesome.min.css', __FILE__));
+
+
             // jQuery validate
             wp_enqueue_script('wc_eps_jquery_validate_js', plugins_url('assets/js/jquery.validate.min.js', __FILE__), array(), false, true);
 
