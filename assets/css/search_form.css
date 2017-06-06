@@ -42,6 +42,7 @@
  */
 #search_form #selected_attributes {
     width: 580px;
+    margin-bottom: 0;
 }
 #search_form #selected_attributes .label {
     display: inline-block;

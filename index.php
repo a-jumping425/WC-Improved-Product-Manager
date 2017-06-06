@@ -194,18 +194,6 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                             <td><input type="input" name="wc_eps[sku]" id="sku" class="regular-text" value="" /></td>
                         </tr>
                         <tr>
-                            <th scope="row"><label for="is_on_sale">Is on sale?</label></th>
-                            <td><input type="checkbox" name="wc_eps[is_on_sale]" id="is_on_sale" /></td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><label for="price_min">Price</label></th>
-                            <td>
-                                <input type="input" name="wc_eps[price_min]" id="price_min" class="price" value="" placeholder="Min" />
-                                &nbsp;-&nbsp;
-                                <input type="input" name="wc_eps[price_max]" id="price_max" class="price" value="" placeholder="Max" />
-                            </td>
-                        </tr>
-                        <tr>
                             <th scope="row"><label for="category">Category</label></th>
                             <td>
                                 <div id="category">
@@ -244,6 +232,18 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                                 <div>
                                     <ul id="selected_attributes"></ul>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="is_on_sale">Is on sale?</label></th>
+                            <td><input type="checkbox" name="wc_eps[is_on_sale]" id="is_on_sale" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="price_min">Price</label></th>
+                            <td>
+                                <input type="input" name="wc_eps[price_min]" id="price_min" class="price" value="" placeholder="Min" />
+                                &nbsp;-&nbsp;
+                                <input type="input" name="wc_eps[price_max]" id="price_max" class="price" value="" placeholder="Max" />
                             </td>
                         </tr>
                         </tbody>
