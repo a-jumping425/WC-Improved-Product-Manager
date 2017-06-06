@@ -87,17 +87,24 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                 return;
             }
 
+            // jQuery validate
             wp_enqueue_script('wc_eps_jquery_validate_js', plugins_url('assets/js/jquery.validate.min.js', __FILE__), array(), false, true);
-            wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
 
+            // jQuery jstree plugin
+            wp_enqueue_script('wc_eps_jstree_js', plugins_url('assets/libs/jstree/jstree.min.js', __FILE__), array(), false, true);
+            wp_enqueue_style('wc_eps_jstree_css', plugins_url('assets/libs/jstree/themes/default/style.min.css', __FILE__));
+
+            // Search form
+            wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
             wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
         }
 
         public function show_search_page() {
+            global $wpdb;
             ?>
             <div class="wrap">
                 <h1><?php _e( 'Enhanced Product Search', 'wc_eps' ); ?></h1>
-                <form method="post" action="">
+                <form id="search_form" method="post" action="">
                     <table class="form-table">
                         <tbody>
                         <tr>
@@ -123,9 +130,30 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                         <tr>
                             <th scope="row"><label for="category">Category</label></th>
                             <td>
-                                <select name="wc_eps[category]" id="category">
-                                    <option>- Category -</option>
-                                </select>
+                                <div id="category">
+                                    <ul>
+                                        <li>Root node 1
+                                            <ul>
+                                                <li data-jstree='{ "selected" : true }'><a href="#"><em>initially</em> <strong>selected</strong></a></li>
+                                                <li data-jstree='{ "icon" : "//jstree.com/tree-icon.png" }'>custom icon URL</li>
+                                                <li data-jstree='{ "opened" : true }'>initially open
+                                                    <ul>
+                                                        <li>Another node</li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>Custom icon class (bootstrap)</li>
+                                                <li data-jstree='{ "icon" : "//jstree.com/tree-icon.png" }'>custom icon URL</li>
+                                                <li data-jstree='{ "opened" : true }'>initially open
+                                                    <ul>
+                                                        <li>Another node</li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>Custom icon class (bootstrap)</li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="//www.jstree.com">Root node 2</a></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         <tr>
