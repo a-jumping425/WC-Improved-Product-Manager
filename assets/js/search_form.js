@@ -21,7 +21,10 @@ jQuery(function () {
         var id = data[0].id;
         var text = data[0].text;
 
-        var li = '<li data-id="'+ id +'"><span class="label"><strong>'+ attribute +'</strong> => '+ text +'Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>';
+        if( jQuery('#search_form #selected_attributes li[data-id="'+ id +'"]').length )
+            return;
+
+        var li = '<li data-id="'+ id +'"><span class="label"><strong>'+ attribute +'</strong> => '+ text +'</span><span><i class="fa fa-minus-square-o"></i></span></li>';
         jQuery('#search_form #selected_attributes').append(li);
     });
 
