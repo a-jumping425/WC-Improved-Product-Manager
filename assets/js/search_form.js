@@ -7,6 +7,7 @@ jQuery(function () {
         },
         "checkbox": {
             "keep_selected_style": false
+            // "three_state": false     // Disable sub nodes selection when checked parent
         },
         'plugins': ["checkbox"]
     });

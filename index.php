@@ -190,7 +190,21 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                         <tr>
                             <th scope="row">Attributes</th>
                             <td>
-
+                                <div class="attribute_to_add">
+                                    <div class="col1">Attribute group</div>
+                                    <div class="col2">Attribute list</div>
+                                    <div class="col3"><i class="fa fa-plus-square-o"></i></div>
+                                </div>
+                                <div class="clear"></div>
+                                <div>
+                                    <ul id="selected_attributes">
+                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
+                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
+                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
+                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
+                                        <li><span class="label">Attribute group => Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
