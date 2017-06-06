@@ -23,7 +23,14 @@ jQuery(function () {
 
         var li = '<li data-id="'+ id +'"><span class="label"><strong>'+ attribute +'</strong> => '+ text +'Attribute</span><span><i class="fa fa-minus-square-o"></i></span></li>';
         jQuery('#search_form #selected_attributes').append(li);
-    })
+    });
+
+    /**
+     * Remove attribute term from selected list
+     */
+    jQuery('body').on('click', '#search_form #selected_attributes .fa-minus-square-o', function (e) {
+        jQuery(this).parents('#selected_attributes li').remove();
+    });
 
     jQuery('#search_form #attribute_terms').select2({
         placeholder: "Select a attribute"
