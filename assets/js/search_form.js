@@ -11,5 +11,12 @@ jQuery(function () {
         },
         'plugins': ["checkbox"]
     });
+
+    jQuery('#search_form .fa-plus-square-o').click(function (e) {
+
+    })
+
+    jQuery('#search_form #attribute_terms').select2();
+
     // jQuery.jstree.reference('#search_form #category').get_checked();
 });

@@ -108,7 +108,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
         }
 
-        public function get_product_categories() {
+        private function get_product_categories() {
             $product_categories = get_terms(array(
                 'taxonomy' => 'product_cat',
                 'orderby' => 'name',
@@ -119,7 +119,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             return $product_categories;
         }
 
-        public function draw_product_category_child_ul($parent) {
+        private function draw_product_category_child_ul($parent) {
             if ( count($this->hierarchical_product_categories[$parent]) ) {
                 echo '<ul>';
                 foreach ($this->hierarchical_product_categories[$parent] as $category) {
@@ -131,7 +131,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             }
         }
 
-        public function draw_product_category_ul() {
+        private function draw_product_category_ul() {
             $product_categories = $this->get_product_categories();
 
             // establish the hierarchy of the category
@@ -155,8 +155,30 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             echo '</ul>';
         }
 
+        private function get_product_attributes() {
+            global $wpdb;
+
+            $attributes = $wpdb->get_results('SELECT attribute_name, attribute_label FROM '. $wpdb->prefix .'woocommerce_attribute_taxonomies ORDER BY attribute_label');
+
+            return $attributes;
+        }
+
+        private function get_product_attribute_terms($attribute_name) {
+            global $wpdb;
+
+            $sql = "SELECT t.`term_id`, t.`name` FROM wp_term_taxonomy AS a"
+            . " INNER JOIN wp_terms AS t ON t.`term_id`=a.`term_id`"
+            . " WHERE a.`taxonomy`='pa_". $attribute_name ."'"
+            . " ORDER BY t.`name`";
+            $terms = $wpdb->get_results($sql);
+
+            return $terms;
+        }
+
         public function show_search_page() {
             global $wpdb;
+
+            $attributes = $this->get_product_attributes();
             ?>
             <div class="wrap">
                 <h1><?php _e( 'Enhanced Product Search', 'wc_eps' ); ?></h1>
@@ -195,9 +217,27 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                             <th scope="row">Attributes</th>
                             <td>
                                 <div class="attribute_to_add">
-                                    <div class="col1">Attribute group</div>
-                                    <div class="col2">Attribute list</div>
-                                    <div class="col3"><i class="fa fa-plus-square-o"></i></div>
+                                    <div class="col1">
+                                        <select id="attribute_terms">
+                                            <?php
+                                            foreach($attributes as $attribute) {
+                                                ?>
+                                                <optgroup label="<?php echo $attribute->attribute_label; ?>">
+                                                    <?php
+                                                    $attribute_terms = $this->get_product_attribute_terms( $attribute->attribute_name );
+                                                    foreach($attribute_terms as $term) {
+                                                        ?>
+                                                        <option value="<?php echo $term->id; ?>"><?php echo $term->name; ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </optgroup>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="col2"><i class="fa fa-plus-square-o"></i></div>
                                 </div>
                                 <div class="clear"></div>
                                 <div>
