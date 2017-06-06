@@ -18,6 +18,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
      */
     final class WCImprovedProductManager {
         protected static $_instance = null;
+        private $hierarchical_product_categories = null;
 
         /**
          * Instance
@@ -99,6 +100,53 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
         }
 
+        public function get_product_categories() {
+            $product_categories = get_terms(array(
+                'taxonomy' => 'product_cat',
+                'orderby' => 'name',
+                'order' => 'ASC',
+                'hide_empty' => false
+            ));
+
+            return $product_categories;
+        }
+
+        public function draw_product_category_child_ul($parent) {
+            if ( count($this->hierarchical_product_categories[$parent]) ) {
+                echo '<ul>';
+                foreach ($this->hierarchical_product_categories[$parent] as $category) {
+                    echo '<li id="'. $category->term_id .'" data-jstree=\'{"opened": true}\'>' . $category->name;
+                    $this->draw_product_category_child_ul($category->term_id);
+                    echo '</li>';
+                }
+                echo '</ul>';
+            }
+        }
+
+        public function draw_product_category_ul() {
+            $product_categories = $this->get_product_categories();
+
+            // establish the hierarchy of the category
+            $children = array();
+            // first pass - collect children
+            foreach ($product_categories as $v ) {
+                $pt = $v->parent;
+                $list = @$children[$pt] ? $children[$pt] : array();
+                array_push( $list, $v );
+                $children[$pt] = $list;
+            }
+
+            $this->hierarchical_product_categories = $children;
+
+            echo '<ul>';
+            foreach ($this->hierarchical_product_categories[0] as $category) {
+                echo '<li id="'. $category->term_id .'" data-jstree=\'{"opened": true}\'>' . $category->name;
+                $this->draw_product_category_child_ul($category->term_id);
+                echo '</li>';
+            }
+            echo '</ul>';
+        }
+
         public function show_search_page() {
             global $wpdb;
             ?>
@@ -131,28 +179,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                             <th scope="row"><label for="category">Category</label></th>
                             <td>
                                 <div id="category">
-                                    <ul>
-                                        <li>Root node 1
-                                            <ul>
-                                                <li data-jstree='{ "selected" : true }'><a href="#"><em>initially</em> <strong>selected</strong></a></li>
-                                                <li data-jstree='{ "icon" : "//jstree.com/tree-icon.png" }'>custom icon URL</li>
-                                                <li data-jstree='{ "opened" : true }'>initially open
-                                                    <ul>
-                                                        <li>Another node</li>
-                                                    </ul>
-                                                </li>
-                                                <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>Custom icon class (bootstrap)</li>
-                                                <li data-jstree='{ "icon" : "//jstree.com/tree-icon.png" }'>custom icon URL</li>
-                                                <li data-jstree='{ "opened" : true }'>initially open
-                                                    <ul>
-                                                        <li>Another node</li>
-                                                    </ul>
-                                                </li>
-                                                <li data-jstree='{ "icon" : "glyphicon glyphicon-leaf" }'>Custom icon class (bootstrap)</li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="//www.jstree.com">Root node 2</a></li>
-                                    </ul>
+                                    <?php $this->draw_product_category_ul(); ?>
                                 </div>
                             </td>
                         </tr>
