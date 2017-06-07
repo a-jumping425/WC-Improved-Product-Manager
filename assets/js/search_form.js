@@ -63,5 +63,6 @@ jQuery(function () {
 
         jQuery('#submit_flag').val(1);
 
+        return true;
     });
 });
