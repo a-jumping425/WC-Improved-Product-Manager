@@ -39,5 +39,29 @@ jQuery(function () {
         placeholder: "Select a attribute"
     });
 
-    // jQuery.jstree.reference('#search_form #category').get_checked();
+    jQuery('#search_form').submit(function (e) {
+        jQuery('#search_form #categories').val( jQuery.jstree.reference('#search_form #category').get_checked() );
+
+        var attributes = new Array();
+        jQuery('#search_form #selected_attributes li').each(function (key) {
+            attributes[key] = jQuery(this).attr('data-id');
+        });
+        jQuery('#search_form #attributes').val( JSON.stringify(attributes) );
+
+        // Check search condition
+        if( jQuery('#search_form #name').val() == ""
+            && jQuery('#search_form #sku').val() == ""
+            && jQuery('#search_form #categories').val() == ""
+            && (jQuery('#search_form #price_min').val() == "" || jQuery('#search_form #price_min').val() == 0)
+            && jQuery('#search_form #price_max').val() == ""
+            && jQuery('#search_form #is_on_sale').prop("checked") == false
+            && jQuery('#search_form #attributes').val() == "[]"
+        ) {
+            alert("Sorry. You have to check at least one condition.");
+            return false;
+        }
+
+        jQuery('#submit_flag').val(1);
+
+    });
 });

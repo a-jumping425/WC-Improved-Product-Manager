@@ -178,6 +178,15 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
         public function show_search_page() {
             global $wpdb;
 
+            var_dump($_POST);
+            if( $_POST['wc_eps']['submit_flag'] ) {
+                $this->show_search_result();
+            } else {
+                $this->show_search_form();
+            }
+        }
+
+        public function show_search_form() {
             $attributes = $this->get_product_attributes();
             ?>
             <div class="wrap">
@@ -248,8 +257,20 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                         </tr>
                         </tbody>
                     </table>
+                    <input type="hidden" id="categories" name="wc_eps[categories]" />
+                    <input type="hidden" id="attributes" name="wc_eps[attributes]" />
+                    <input type="hidden" id="submit_flag" name="wc_eps[submit_flag]" />
                     <?php submit_button(); ?>
                 </form>
+            </div>
+            <?php
+        }
+
+        public function show_search_result() {
+            global $wpdb;
+            ?>
+            <div class="wrap">
+                <h1><?php _e( 'Enhanced Product Search', 'wc_eps' ); ?></h1>
             </div>
             <?php
         }
