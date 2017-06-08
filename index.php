@@ -167,9 +167,9 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             global $wpdb;
 
             $sql = "SELECT a.`term_taxonomy_id`, t.`name` FROM wp_term_taxonomy AS a"
-            . " INNER JOIN wp_terms AS t ON t.`term_id`=a.`term_id`"
-            . " WHERE a.`taxonomy`='pa_". $attribute_name ."'"
-            . " ORDER BY t.`name`";
+                . " INNER JOIN wp_terms AS t ON t.`term_id`=a.`term_id`"
+                . " WHERE a.`taxonomy`='pa_". $attribute_name ."'"
+                . " ORDER BY t.`name`";
             $terms = $wpdb->get_results($sql);
 
             return $terms;
@@ -178,6 +178,18 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
         public function show_search_page() {
             global $wpdb;
 
+            $_POST = [
+                'wc_eps' => [
+                    'name' => '111',
+                    'sku' => '222',
+                    'is_on_sale' => 'on',
+                    'price_min' =>'10',
+                    'price_max' =>'300',
+                    'categories' =>'27,28,32,33',
+                    'attributes' =>'[\"26\",\"43\"]',
+                    'submit_flag' =>'1'
+                ]
+            ];
 //            var_dump($_POST);
 
             if( $_POST['wc_eps']['submit_flag'] ) {
@@ -271,7 +283,81 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             global $wpdb;
             ?>
             <div class="wrap">
-                <h1><?php _e( 'Enhanced Product Search', 'wc_eps' ); ?></h1>
+                <h1><?php _e( 'Enhanced Product Search - Product list', 'wc_eps' ); ?></h1>
+                <table class="wp-list-table widefat fixed striped posts">
+                    <thead>
+                    <tr>
+                        <th class="thumb">Image</th>
+                        <th class="name">Name</th>
+                        <th class="sku">SKU</th>
+                        <th class="price">Price</th>
+                        <th class="category">Categories</th>
+                        <th class="attributes">Attributes</th>
+                    </tr>
+                    </thead>
+                    <tbody id="the-list">
+                    <tr id="post-136">
+                        <td class="thumb">
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">
+                                <img width="150" height="150" src="//localhost/wordpress/wordpress/wp-content/uploads/2013/06/cd_6_angle-150x150.jpg" class="" alt="" />
+                            </a>
+                        </td>
+                        <td class="name">
+                            <strong><a class="row-title" href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">Woo Single #2</a></strong>
+                        </td>
+                        <td class="sku">SKU 123</td>
+                        <td class="price">
+                            <del><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>3.00</span></del> <ins><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>2.00</span></ins>
+                        </td>
+                        <td class="category">
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=music&post_type=product ">Music</a>, <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=singles&post_type=product ">Singles</a>
+                        </td>
+                        <td class="attributes">
+                            <div class="attribute-row">
+                                <strong>Color</strong><br>Red, White, Black
+                            </div>
+                            <div>
+                                <strong>Color</strong><br>Red, White, Black
+                            </div>
+                        </td>
+                    </tr>
+                    <tr id="post-138">
+                        <td class="thumb">
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">
+                                <img width="150" height="150" src="//localhost/wordpress/wordpress/wp-content/uploads/2013/06/cd_6_angle-150x150.jpg" class="" alt="" />
+                            </a>
+                        </td>
+                        <td class="name">
+                            <strong><a class="row-title" href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">Woo Single #2</a></strong>
+                        </td>
+                        <td class="sku">SKU 123</td>
+                        <td class="price">
+                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>9.00</span>
+                        </td>
+                        <td class="category">
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=music&post_type=product ">Music</a>, <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=singles&post_type=product ">Singles</a>
+                        </td>
+                        <td class="attributes">
+                            <div class="attribute-row">
+                                <strong>Color</strong><br>Red, White, Black
+                            </div>
+                            <div>
+                                <strong>Color</strong><br>Red, White, Black
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th class="thumb">Image</th>
+                        <th class="name">Name</th>
+                        <th class="sku">SKU</th>
+                        <th class="price">Price</th>
+                        <th class="category">Categories</th>
+                        <th class="attributes">Attributes</th>
+                    </tr>
+                    </tfoot>
+                </table>
             </div>
             <?php
         }
