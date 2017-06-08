@@ -4,6 +4,6 @@ jQuery(function () {
         "ordering": false,
         "processing": true,
         "serverSide": true,
-        "ajax": "scripts/server_processing.php"
+        "ajax": ajaxurl + '?action=wc_ipm_searched_products'
     });
 });
