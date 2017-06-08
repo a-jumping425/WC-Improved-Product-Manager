@@ -38,7 +38,7 @@ jQuery(function () {
             {
                 data: 'attributes',
                 className: 'attributes',
-                width: '24%'
+                width: '30%'
             },
             {
                 data: 'date',
