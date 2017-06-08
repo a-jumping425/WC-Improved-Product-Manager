@@ -12,7 +12,7 @@ jQuery(function () {
             {
                 data: 'thumbnail',
                 className: 'thumbnail',
-                width: '60px'
+                width: '60'
             },
             {
                 data: 'name',
@@ -37,7 +37,8 @@ jQuery(function () {
             },
             {
                 data: 'attributes',
-                className: 'attributes'
+                className: 'attributes',
+                width: '24%'
             },
             {
                 data: 'date',

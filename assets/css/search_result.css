@@ -7,6 +7,12 @@
   height: auto;
 }
 
+#product_list td .attribute-row {
+  margin-bottom: 6px;
+}
+#product_list td .attribute-row:last-child {
+  margin-bottom: 0;
+}
 #product_list td .attribute-row span {
   display: block;
 }
