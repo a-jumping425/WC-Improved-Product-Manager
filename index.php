@@ -240,9 +240,42 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                     . $inner_join
                     . " WHERE p.`post_type`='product' AND p.`post_status`='publish'". $where
                     . " GROUP BY p.`ID`";
-                $rows = $wpdb->get_col($sql);
-                var_dump( implode(',', $rows) );
-                echo $wpdb->last_query;
+                $ids = $wpdb->get_col($sql);
+//                echo $wpdb->last_query;
+
+                /**
+                 * Get products info to show
+                 */
+                $products = [];
+                foreach ($ids as $id) {
+                    $attributes_data = [];
+
+                    $productObj = wc_get_product($id);
+                    $attributes = $productObj->get_attributes();
+                    foreach ($attributes as $key => $attribute) {
+                        $terms = [];
+                        $taxonomy = $attribute->get_taxonomy();
+                        foreach ( $attribute->get_options() as $term_id ) {
+                            $terms[] = get_term($term_id, $taxonomy)->name;
+                        }
+
+                        $attributes_data[$key] = [
+                            'attribute' => $attribute->get_taxonomy_object()->attribute_label,
+                            'terms' => implode(', ', $terms)
+                        ];
+                    }
+
+                    $products[] = [
+                        'id' => $id,
+                        'thumbnail' => $productObj->get_image(),
+                        'name' => $productObj->get_name(),
+                        'sku' => $productObj->get_sku(),
+                        'price' => $productObj->get_price_html(),
+                        'categories' => $productObj->get_categories(),
+                        'attributes' => $attributes_data
+                    ];
+                }
+                var_dump($products);
 
                 $this->show_search_result();
             } else {
