@@ -274,11 +274,12 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                     $attributes_html .= '</div>';
                 }
 
-
+                $edit_link = get_admin_url() . "post.php?post=". $id ."&action=edit";
+                $edit_anchor = '<a href="'. $edit_link .'" target="_blank">';
                 $products[] = [
                     'id' => $id,
-                    'thumbnail' => $productObj->get_image(),
-                    'name' => $productObj->get_name(),
+                    'thumbnail' => $edit_anchor . $productObj->get_image() ."</a>",
+                    'name' => "<strong>". $edit_anchor . $productObj->get_name() ."</strong>",
                     'sku' => $productObj->get_sku(),
                     'price' => $productObj->get_price_html(),
                     'categories' => $productObj->get_categories(),
