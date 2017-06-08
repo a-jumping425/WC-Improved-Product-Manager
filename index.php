@@ -235,13 +235,22 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                 $inner_join .= " INNER JOIN wp_term_relationships AS r2 ON r2.`object_id`=p.`ID` AND r2.`term_taxonomy_id` IN (". $attributes .")";
             }
 
+            $sql = "SELECT COUNT(t.id) FROM"
+                . " (SELECT p.ID AS id"
+                . " FROM wp_posts AS p"
+                . $inner_join
+                . " WHERE p.`post_type`='product' AND p.`post_status`='publish'". $where
+                . " GROUP BY p.`ID`) AS t";
+            $total_products = $wpdb->get_var($sql);
+
             $sql = "SELECT p.ID"
                 . " FROM wp_posts AS p"
                 . $inner_join
                 . " WHERE p.`post_type`='product' AND p.`post_status`='publish'". $where
-                . " GROUP BY p.`ID`";
+                . " GROUP BY p.`ID`"
+                . " LIMIT ". $_GET['start'] .", ". $_GET['length'];
             $ids = $wpdb->get_col($sql);
-//            echo $wpdb->last_query;
+//            echo $wpdb->last_query; exit;
 
             /**
              * Get products info to show
@@ -278,7 +287,6 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                 ];
             }
 
-            $total_products = count($products);
             $data = [
                 'draw' => $_GET['draw'],
                 'recordsTotal' => $total_products,
