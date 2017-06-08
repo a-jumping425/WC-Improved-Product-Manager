@@ -88,24 +88,34 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                 return;
             }
 
-            // Font Awesome
-            wp_enqueue_style('wc_eps_fontawesome', plugins_url('assets/css/font-awesome.min.css', __FILE__));
+//            if( $_POST['wc_eps']['submit_flag'] ) {
+            if( true ) {
+                // jQuery datatables plugin
+                wp_enqueue_script('wc_eps_datatables_js', plugins_url('assets/libs/datatables/datatables.min.js', __FILE__), array(), false, true);
+                wp_enqueue_style('wc_eps_datatables_css', plugins_url('assets/libs/datatables/datatables.min.css', __FILE__));
 
+                // Search result page
+                wp_enqueue_script('wc_eps_search_result_js', plugins_url('assets/js/search_result.js', __FILE__), array(), false, true);
+                wp_enqueue_style('wc_eps_search_result_css', plugins_url('assets/css/search_result.css', __FILE__));
+            } else {
+                // Font Awesome
+                wp_enqueue_style('wc_eps_fontawesome', plugins_url('assets/css/font-awesome.min.css', __FILE__));
 
-            // jQuery validate
-            wp_enqueue_script('wc_eps_jquery_validate_js', plugins_url('assets/js/jquery.validate.min.js', __FILE__), array(), false, true);
+                // jQuery validate
+                wp_enqueue_script('wc_eps_jquery_validate_js', plugins_url('assets/js/jquery.validate.min.js', __FILE__), array(), false, true);
 
-            // jQuery jstree plugin
-            wp_enqueue_script('wc_eps_jstree_js', plugins_url('assets/libs/jstree/jstree.min.js', __FILE__), array(), false, true);
-            wp_enqueue_style('wc_eps_jstree_css', plugins_url('assets/libs/jstree/themes/default/style.min.css', __FILE__));
+                // jQuery jstree plugin
+                wp_enqueue_script('wc_eps_jstree_js', plugins_url('assets/libs/jstree/jstree.min.js', __FILE__), array(), false, true);
+                wp_enqueue_style('wc_eps_jstree_css', plugins_url('assets/libs/jstree/themes/default/style.min.css', __FILE__));
 
-            // jQuery Select2 plugin
-            wp_enqueue_script('wc_eps_select2_js', plugins_url('assets/libs/select2/js/select2.full.min.js', __FILE__), array(), false, true);
-            wp_enqueue_style('wc_eps_select2_css', plugins_url('assets/libs/select2/css/select2.min.css', __FILE__));
+                // jQuery Select2 plugin
+                wp_enqueue_script('wc_eps_select2_js', plugins_url('assets/libs/select2/js/select2.full.min.js', __FILE__), array(), false, true);
+                wp_enqueue_style('wc_eps_select2_css', plugins_url('assets/libs/select2/css/select2.min.css', __FILE__));
 
-            // Search form
-            wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
-            wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
+                // Search form
+                wp_enqueue_script('wc_eps_search_form_js', plugins_url('assets/js/search_form.js', __FILE__), array(), false, true);
+                wp_enqueue_style('wc_eps_search_form_css', plugins_url('assets/css/search_form.css', __FILE__));
+            }
         }
 
         private function get_product_categories() {
@@ -368,7 +378,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             ?>
             <div class="wrap">
                 <h1><?php _e( 'Enhanced Product Search - Product list', 'wc_eps' ); ?></h1>
-                <table class="wp-list-table widefat fixed striped posts">
+                <table id="product_list" class="wp-list-table widefat fixed striped posts">
                     <thead>
                     <tr>
                         <th class="thumb">Image</th>
