@@ -180,12 +180,12 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
 
             $_POST = [
                 'wc_eps' => [
-                    'name' => '111',
-                    'sku' => '222',
-                    'is_on_sale' => 'on',
-                    'price_min' =>'10',
-                    'price_max' =>'300',
-                    'categories' =>'27,28,32,33',
+//                    'name' => 'woo',
+//                    'sku' => 'sku',
+//                    'is_on_sale' => 'on',
+//                    'price_min' =>'10',
+//                    'price_max' =>'20',
+//                    'categories' =>'27,28,32,33',
                     'attributes' =>'[\"26\",\"43\"]',
                     'submit_flag' =>'1'
                 ]
@@ -193,6 +193,57 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
 //            var_dump($_POST);
 
             if( $_POST['wc_eps']['submit_flag'] ) {
+                $where = $inner_join = $left_join = "";
+                $conditions = $_POST['wc_eps'];
+
+                // Name
+                if( $conditions['name'] ) {
+                    $where .= " AND INSTR(p.post_title, '". $conditions['name'] ."')";
+                }
+
+                // SKU
+                if( $conditions['sku'] ) {
+                    $inner_join .= " INNER JOIN wp_postmeta AS m1 ON m1.`post_id`=p.`ID` AND m1.`meta_key`='_sku' AND INSTR(m1.`meta_value`, '". $conditions['sku'] ."')";
+                }
+
+                // Is on sale
+                if( $conditions['is_on_sale'] ) {
+                    $inner_join .= " INNER JOIN wp_postmeta AS m2 ON m2.`post_id`=p.`ID` AND m2.`meta_key`='_price'"
+                        . " INNER JOIN wp_postmeta AS m3 ON m3.`post_id`=p.`ID` AND m3.`meta_key`='_regular_price'";
+                    $where .= " AND m3.`meta_value`*1 > m2.`meta_value`*1";
+                }
+
+                // Price min and max
+                $price_min = $conditions['price_min'] ? floatval($conditions['price_min']) : '';
+                $price_max = $conditions['price_max'] ? floatval($conditions['price_max']) : '';
+                if( $price_min && $price_max ) {
+                    $inner_join .= " INNER JOIN wp_postmeta AS m4 ON m4.`post_id`=p.`ID` AND m4.`meta_key`='_price' AND m4.`meta_value`*1 BETWEEN ". $price_min ." AND ". $price_max;
+                } else if( $price_min == "" && $price_max ) {
+                    $inner_join .= " INNER JOIN wp_postmeta AS m4 ON m4.`post_id`=p.`ID` AND m4.`meta_key`='_price' AND m4.`meta_value`*1 <= ". $price_max;
+                } else if( $price_min && $price_max == "" ) {
+                    $inner_join .= " INNER JOIN wp_postmeta AS m4 ON m4.`post_id`=p.`ID` AND m4.`meta_key`='_price' AND m4.`meta_value`*1 >= ". $price_min;
+                }
+
+                // Categories
+                if( $conditions['categories'] ) {
+                    $inner_join .= " INNER JOIN wp_term_relationships AS r1 ON r1.`object_id`=p.`ID` AND r1.`term_taxonomy_id` IN (". $conditions['categories'] .")";
+                }
+
+                // Attributes
+                if( $conditions['attributes'] ) {
+                    $attributes = implode( ',', json_decode(stripslashes($conditions['attributes'])) );
+                    $inner_join .= " INNER JOIN wp_term_relationships AS r2 ON r2.`object_id`=p.`ID` AND r2.`term_taxonomy_id` IN (". $attributes .")";
+                }
+
+                $sql = "SELECT p.ID"
+                    . " FROM wp_posts AS p"
+                    . $inner_join
+                    . " WHERE p.`post_type`='product' AND p.`post_status`='publish'". $where
+                    . " GROUP BY p.`ID`";
+                $rows = $wpdb->get_col($sql);
+                var_dump( implode(',', $rows) );
+                echo $wpdb->last_query;
+
                 $this->show_search_result();
             } else {
                 $this->show_search_form();
@@ -298,7 +349,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                     <tbody id="the-list">
                     <tr id="post-136">
                         <td class="thumb">
-                            <a href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit" target="_blank">
                                 <img width="150" height="150" src="//localhost/wordpress/wordpress/wp-content/uploads/2013/06/cd_6_angle-150x150.jpg" class="" alt="" />
                             </a>
                         </td>
@@ -310,7 +361,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                             <del><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>3.00</span></del> <ins><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>2.00</span></ins>
                         </td>
                         <td class="category">
-                            <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=music&post_type=product ">Music</a>, <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=singles&post_type=product ">Singles</a>
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=music&post_type=product" target="_blank">Music</a>, <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=singles&post_type=product" target="_blank">Singles</a>
                         </td>
                         <td class="attributes">
                             <div class="attribute-row">
@@ -323,19 +374,19 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                     </tr>
                     <tr id="post-138">
                         <td class="thumb">
-                            <a href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit" target="_blank">
                                 <img width="150" height="150" src="//localhost/wordpress/wordpress/wp-content/uploads/2013/06/cd_6_angle-150x150.jpg" class="" alt="" />
                             </a>
                         </td>
                         <td class="name">
-                            <strong><a class="row-title" href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit">Woo Single #2</a></strong>
+                            <strong><a class="row-title" href="http://localhost/wordpress/wordpress/wp-admin/post.php?post=136&action=edit" target="_blank">Woo Single #2</a></strong>
                         </td>
                         <td class="sku">SKU 123</td>
                         <td class="price">
                             <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>9.00</span>
                         </td>
                         <td class="category">
-                            <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=music&post_type=product ">Music</a>, <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=singles&post_type=product ">Singles</a>
+                            <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=music&post_type=product" target="_blank">Music</a>, <a href="http://localhost/wordpress/wordpress/wp-admin/edit.php?product_cat=singles&post_type=product" target="_blank">Singles</a>
                         </td>
                         <td class="attributes">
                             <div class="attribute-row">
