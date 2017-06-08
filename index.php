@@ -93,8 +93,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                 return;
             }
 
-//            if( $_POST['wc_eps']['submit_flag'] ) {
-            if( true ) {
+            if( $_POST['wc_eps']['submit_flag'] ) {
                 // jQuery datatables plugin
                 wp_enqueue_script('wc_eps_datatables_js', plugins_url('assets/libs/datatables/datatables.min.js', __FILE__), array(), false, true);
                 wp_enqueue_style('wc_eps_datatables_css', plugins_url('assets/libs/datatables/datatables.min.css', __FILE__));
@@ -230,7 +229,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             }
 
             // Attributes
-            if( $conditions['attributes'] ) {
+            if( $conditions['attributes'] != '[]' ) {
                 $attributes = implode( ',', json_decode(stripslashes($conditions['attributes'])) );
                 $inner_join .= " INNER JOIN wp_term_relationships AS r2 ON r2.`object_id`=p.`ID` AND r2.`term_taxonomy_id` IN (". $attributes .")";
             }
@@ -304,28 +303,12 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
         public function show_search_page() {
             global $wpdb;
 
-            $_POST = [
-                'wc_eps' => [
-//                    'name' => 'woo',
-//                    'sku' => 'sku',
-//                    'is_on_sale' => 'on',
-//                    'price_min' =>'10',
-//                    'price_max' =>'20',
-                    'categories' =>'27,28,32,33',
-//                    'attributes' =>'[\"26\",\"43\"]',
-                    'submit_flag' =>'1'
-                ]
-            ];
-//            var_dump($_POST);
-
             if( $_POST['wc_eps']['submit_flag'] ) {
                 $_SESSION['wc_eps_search_conditions'] = $_POST['wc_eps'];
 
-                var_dump($_SESSION);
-
                 $this->show_search_result();
             } else {
-//                $_SESSION['wc_eps_search_conditions'] = "";
+                $_SESSION['wc_eps_search_conditions'] = "";
 
                 $this->show_search_form();
             }
