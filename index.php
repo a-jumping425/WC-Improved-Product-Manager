@@ -123,8 +123,8 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             if ( count($this->hierarchical_product_categories[$parent]) ) {
                 echo '<ul>';
                 foreach ($this->hierarchical_product_categories[$parent] as $category) {
-                    echo '<li id="'. $category->term_id .'" data-jstree=\'{"opened": true}\'>' . $category->name;
-                    $this->draw_product_category_child_ul($category->term_id);
+                    echo '<li id="'. $category->term_taxonomy_id .'" data-jstree=\'{"opened": true}\'>' . $category->name;
+                    $this->draw_product_category_child_ul($category->term_taxonomy_id);
                     echo '</li>';
                 }
                 echo '</ul>';
@@ -148,8 +148,8 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
 
             echo '<ul>';
             foreach ($this->hierarchical_product_categories[0] as $category) {
-                echo '<li id="'. $category->term_id .'" data-jstree=\'{"opened": true}\'>' . $category->name;
-                $this->draw_product_category_child_ul($category->term_id);
+                echo '<li id="'. $category->term_taxonomy_id .'" data-jstree=\'{"opened": true}\'>' . $category->name;
+                $this->draw_product_category_child_ul($category->term_taxonomy_id);
                 echo '</li>';
             }
             echo '</ul>';
@@ -166,7 +166,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
         private function get_product_attribute_terms($attribute_name) {
             global $wpdb;
 
-            $sql = "SELECT t.`term_id`, t.`name` FROM wp_term_taxonomy AS a"
+            $sql = "SELECT a.`term_taxonomy_id`, t.`name` FROM wp_term_taxonomy AS a"
             . " INNER JOIN wp_terms AS t ON t.`term_id`=a.`term_id`"
             . " WHERE a.`taxonomy`='pa_". $attribute_name ."'"
             . " ORDER BY t.`name`";
@@ -178,7 +178,8 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
         public function show_search_page() {
             global $wpdb;
 
-            var_dump($_POST);
+//            var_dump($_POST);
+
             if( $_POST['wc_eps']['submit_flag'] ) {
                 $this->show_search_result();
             } else {
@@ -225,7 +226,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                                                     $attribute_terms = $this->get_product_attribute_terms( $attribute->attribute_name );
                                                     foreach($attribute_terms as $term) {
                                                         ?>
-                                                        <option data-attrlabel="<?php echo $attribute->attribute_label; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+                                                        <option data-attrlabel="<?php echo $attribute->attribute_label; ?>" value="<?php echo $term->term_taxonomy_id; ?>"><?php echo $term->name; ?></option>
                                                         <?php
                                                     }
                                                     ?>
