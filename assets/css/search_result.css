@@ -1,0 +1,12 @@
+#product_list {
+  width: 100%;
+}
+
+#product_list td.thumbnail img {
+  width: 60px;
+  height: auto;
+}
+
+#product_list td .attribute-row span {
+  display: block;
+}

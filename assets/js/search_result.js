@@ -12,16 +12,21 @@ jQuery(function () {
             {
                 data: 'thumbnail',
                 className: 'thumbnail',
-                width: '150px'
+                width: '60px'
             },
             {
                 data: 'name',
-                className: 'name'
+                className: 'name',
+                width: '20%'
             },
             {
                 data: 'sku',
                 className: 'sku'
             },
+            // {
+            //     data: 'stock',
+            //     className: 'stock'
+            // },
             {
                 data: 'price',
                 className: 'price'
@@ -33,6 +38,10 @@ jQuery(function () {
             {
                 data: 'attributes',
                 className: 'attributes'
+            },
+            {
+                data: 'date',
+                className: 'date'
             }
         ]
     });

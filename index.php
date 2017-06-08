@@ -283,7 +283,9 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                     'sku' => $productObj->get_sku(),
                     'price' => $productObj->get_price_html(),
                     'categories' => $productObj->get_categories(),
-                    'attributes' => $attributes_html
+                    'attributes' => $attributes_html,
+                    'stock' => $productObj->get_stock_status(),
+                    'date' => $productObj->get_date_created()->date('d.m.Y')
                 ];
             }
 
@@ -414,15 +416,17 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             ?>
             <div class="wrap">
                 <h1><?php _e( 'Enhanced Product Search - Product list', 'wc_eps' ); ?></h1>
-                <table id="product_list" class="wp-list-table widefat fixed striped posts">
+                <table id="product_list" class="wp-list-table widefat fixed striped posts" width="100%">
                     <thead>
                     <tr>
                         <th class="thumbnail">Image</th>
                         <th class="name">Name</th>
                         <th class="sku">SKU</th>
+                        <!--th class="stock">Stock</th-->
                         <th class="price">Price</th>
                         <th class="categories">Categories</th>
                         <th class="attributes">Attributes</th>
+                        <th class="date">Date</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -430,9 +434,11 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                         <th class="thumbnail">Image</th>
                         <th class="name">Name</th>
                         <th class="sku">SKU</th>
+                        <!--th class="stock">Stock</th-->
                         <th class="price">Price</th>
                         <th class="categories">Categories</th>
                         <th class="attributes">Attributes</th>
+                        <th class="date">Date</th>
                     </tr>
                     </tfoot>
                 </table>
