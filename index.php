@@ -389,7 +389,7 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
                     <input type="hidden" id="categories" name="wc_eps[categories]" />
                     <input type="hidden" id="attributes" name="wc_eps[attributes]" />
                     <input type="hidden" id="submit_flag" name="wc_eps[submit_flag]" />
-                    <?php submit_button(); ?>
+                    <?php submit_button('Search Products'); ?>
                 </form>
             </div>
             <?php
