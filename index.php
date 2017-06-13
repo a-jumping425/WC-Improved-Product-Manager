@@ -399,7 +399,10 @@ if ( ! class_exists( 'WCImprovedProductManager' ) ) :
             global $wpdb;
             ?>
             <div class="wrap">
-                <h1><?php _e( 'Enhanced Product Search - Product list', 'wc_eps' ); ?></h1>
+                <h1>
+                    <?php _e( 'Enhanced Product Search - Product list', 'wc_eps' ); ?>
+                    (<span><a href="<?php echo get_admin_url(); ?>admin.php?page=wc_eps">Back to search page</a></span>)
+                </h1>
                 <table id="product_list" class="wp-list-table widefat fixed striped posts" width="100%">
                     <thead>
                     <tr>
